@@ -10,7 +10,31 @@ first_layout = [
     [sg.Text("By AliLaser", font="Calibre 15", text_color="black", expand_x=True, justification="center")]
 ]
 
-window = sg.Window("GTA", first_layout)
+and_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-ANDBTN1-", size=(4, 30), pad=(0, 5))],
+    [sg.Slider(range=(0, 1), key="-ANDBTN2-", size=(4, 30), pad=(0, 5))]
+])
+
+and_layout = [
+    [
+        sg.Column([
+            [
+                and_btn,
+                sg.Image("gates/and.png", expand_x=True, expand_y=True, key="-ANDGATE-", pad=0),
+                sg.Image("gates/off.png", expand_x=True, expand_y=True, key="-OFF-", pad=0)
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/and_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="Center", pad=(100, 0))
+    ]
+]
+
+window = sg.Window("GTA", and_layout)
 
 while True:
     event, values = window.read()
