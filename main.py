@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 
-def logical_gates(and1, and2, or1, or2, Not):
+def logical_gates(and1, and2, or1, or2, Not, buffer):
     """
     A method for process of input gates and generate appropriate output of gates
     :param and1:
@@ -9,6 +9,7 @@ def logical_gates(and1, and2, or1, or2, Not):
     :param or1:
     :param or2:
     :param Not:
+    :param buffer:
     :return:
     """
     if bool(and1) and bool(and2):
@@ -26,6 +27,11 @@ def logical_gates(and1, and2, or1, or2, Not):
     else:
         window["-OFF3-"].update("gates/off.png")
 
+    if bool(buffer):
+        window["-OFF4-"].update("gates/on.png")
+    else:
+        window["-OFF4-"].update("gates/off.png")
+
 
 sg.theme("LightBlue7")
 
@@ -37,16 +43,11 @@ first_layout = [
     [sg.Text("By AliLaser", font="Calibre 15", text_color="black", expand_x=True, justification="center")]
 ]
 
+# And gate
 and_btn = sg.Column([
     [sg.Slider(range=(0, 1), key="-ANDBTN1-", size=(4, 30), pad=(0, 5))],
     [sg.Slider(range=(0, 1), key="-ANDBTN2-", size=(4, 30), pad=(0, 5))]
 ])
-
-# off_image = sg.Column([
-#     [
-#         sg.Image("gates/off.png", key="-OFF-", expand_x=True, expand_y=True, pad=0)
-#     ]
-# ])
 
 and_layout = [
     [
@@ -67,6 +68,7 @@ and_layout = [
     ]
 ]
 
+# Or gate
 or_btn = sg.Column([
     [sg.Slider(range=(0, 1), key="-ORBTN1-", size=(4, 30), pad=(0, 5))],
     [sg.Slider(range=(0, 1), key="-ORBTN2-", size=(4, 30), pad=(0, 5))]
@@ -87,6 +89,7 @@ or_layout = [
     ], justification="center", pad=(100, 0))]
 ]
 
+# Not gate
 not_btn = sg.Column([
     [sg.Slider(range=(0, 1), key="-NOTBTN-", size=(4, 30), pad=(0, 50))]
 ])
@@ -110,13 +113,38 @@ not_layout = [
     ]
 ]
 
+# Buffer gate
+buffer_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-BUFFER-", size=(4, 30), pad=(0, 50))]
+])
+
+buffer_layout = [
+    [
+        sg.Column([
+            [
+                buffer_btn,
+                sg.Image("gates/buffer.png", expand_x=True, expand_y=True, pad=(0, 50)),
+                sg.Image("gates/off.png", key="-OFF4-", expand_x=True, expand_y=True, pad=(0, 50))
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/buffer_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="center", pad=(100, 0))
+    ]
+]
+
 tab_group = [[
     sg.TabGroup([
         [
             sg.Tab("start", first_layout),
             sg.Tab("and", and_layout),
             sg.Tab("or", or_layout),
-            sg.Tab("not", not_layout)
+            sg.Tab("not", not_layout),
+            sg.Tab("buffer", buffer_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
@@ -133,6 +161,7 @@ while True:
                   values["-ANDBTN2-"],
                   values["-ORBTN1-"],
                   values["-ORBTN2-"],
-                  values["-NOTBTN-"])
+                  values["-NOTBTN-"],
+                  values["-BUFFER-"])
 
 window.close()
