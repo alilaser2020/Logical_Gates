@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 
-def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2):
+def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2, xor1, xor2):
     """
     A method for process of input gates and generate appropriate output of gates
     :param and1:
@@ -14,6 +14,8 @@ def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2):
     :param nand2:
     :param nor1:
     :param nor2:
+    :param xor1:
+    :param xor2:
     :return:
     """
     # And
@@ -51,6 +53,12 @@ def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2):
         window["-OFF6-"].update("gates/on.png")
     else:
         window["-OFF6-"].update("gates/off.png")
+
+    # Xor
+    if bool(xor1) ^ bool(xor2):
+        window["-OFF7-"].update("gates/on.png")
+    else:
+        window["-OFF7-"].update("gates/off.png")
 
 
 sg.theme("LightBlue7")
@@ -207,6 +215,29 @@ nor_layout = [
     ]
 ]
 
+# Xor gate
+xor_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-XORBTN1-", size=(4, 30), pad=(0, 5))],
+    [sg.Slider(range=(0, 1), key="-XORBTN2-", size=(4, 30), pad=(0, 5))]
+])
+xor_layout = [
+    [
+        sg.Column([
+            [
+                xor_btn,
+                sg.Image("gates/xor.png", expand_y=True, expand_x=True, pad=(0, 50)),
+                sg.Image("gates/off.png", key="-OFF7-", expand_x=True, expand_y=True, pad=(0, 50))
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/xor_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="center", pad=(100, 0))
+    ]
+]
 # Configuration
 tab_group = [[
     sg.TabGroup([
@@ -217,7 +248,8 @@ tab_group = [[
             sg.Tab("not", not_layout),
             sg.Tab("buffer", buffer_layout),
             sg.Tab("nand", nand_layout),
-            sg.Tab("nor", nor_layout)
+            sg.Tab("nor", nor_layout),
+            sg.Tab("xor", xor_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
@@ -239,6 +271,8 @@ while True:
                   values["-NANDBTN1-"],
                   values["-NANDBTN2-"],
                   values["-NORBTN1-"],
-                  values["-NORBTN2-"])
+                  values["-NORBTN2-"],
+                  values["-XORBTN1-"],
+                  values["-XORBTN2-"])
 
 window.close()
