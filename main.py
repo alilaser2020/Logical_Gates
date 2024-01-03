@@ -273,6 +273,20 @@ xnor_layout = [
     ]
 ]
 
+# About
+about_layout = [
+    [sg.Text("֍ Ver", text_color="red", font="Calibre 15")],
+    [sg.Text("1. Optimize the code", text_color="blue", font="Calibre 15")],
+    [sg.Text("2. Covers the eight main logic gates", text_color="blue", font="Calibre 15")],
+    [sg.Text("3. Improve the quality of images", text_color="blue", font="Calibre 15")],
+    [sg.Text("4. Append start and about tabs", text_color="blue", font="Calibre 15")],
+    [sg.Text("--------------------------------------------------------------------------------------------", text_color="black", font="Calibre 15")],
+    [sg.Image("gates/instagram.png"), sg.Text("@alilaser1999", text_color="black", font="Calibre 15")],
+    [sg.Image("gates/telegram.png"), sg.Text("@Ali_Laser1999", text_color="black", font="Calibre 15")],
+    [sg.Image("gates/site.png"), sg.Text("Ali_Khoshkholgh.ir", text_color="black", font="Calibre 15")]
+]
+
+
 # Configuration
 tab_group = [[
     sg.TabGroup([
@@ -285,7 +299,8 @@ tab_group = [[
             sg.Tab("nand", nand_layout),
             sg.Tab("nor", nor_layout),
             sg.Tab("xor", xor_layout),
-            sg.Tab("xnor", xnor_layout)
+            sg.Tab("xnor", xnor_layout),
+            sg.Tab("about", about_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
