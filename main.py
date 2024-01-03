@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 
-def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2):
+def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2):
     """
     A method for process of input gates and generate appropriate output of gates
     :param and1:
@@ -12,32 +12,45 @@ def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2):
     :param buffer:
     :param nand1:
     :param nand2:
+    :param nor1:
+    :param nor2:
     :return:
     """
+    # And
     if bool(and1) and bool(and2):
         window["-OFF1-"].update("gates/on.png")
     else:
         window["-OFF1-"].update("gates/off.png")
 
+    # Or
     if bool(or1) or bool(or2):
         window["-OFF2-"].update("gates/on.png")
     else:
         window["-OFF2-"].update("gates/off.png")
 
+    # not
     if not bool(Not):
         window["-OFF3-"].update("gates/on.png")
     else:
         window["-OFF3-"].update("gates/off.png")
 
+    # Buffer
     if bool(buffer):
         window["-OFF4-"].update("gates/on.png")
     else:
         window["-OFF4-"].update("gates/off.png")
 
-    if not(bool(nand1) and bool(nand2)):
+    # Nand
+    if not (bool(nand1) and bool(nand2)):
         window["-OFF5-"].update("gates/on.png")
     else:
         window["-OFF5-"].update("gates/off.png")
+
+    # Nor
+    if not (bool(nor1) or bool(nor2)):
+        window["-OFF6-"].update("gates/on.png")
+    else:
+        window["-OFF6-"].update("gates/off.png")
 
 
 sg.theme("LightBlue7")
@@ -169,6 +182,31 @@ nand_layout = [
     ]
 ]
 
+# Nor gate
+nor_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-NORBTN1-", size=(4, 30), pad=(0, 5))],
+    [sg.Slider(range=(0, 1), key="-NORBTN2-", size=(4, 30), pad=(0, 5))]
+])
+
+nor_layout = [
+    [
+        sg.Column([
+            [
+                nor_btn,
+                sg.Image("gates/nor.png", expand_x=True, expand_y=True, pad=(0, 50)),
+                sg.Image("gates/off.png", key="-OFF6-", expand_y=True, expand_x=True, pad=(0, 50))
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/nor_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="center", pad=(100, 0))
+    ]
+]
+
 # Configuration
 tab_group = [[
     sg.TabGroup([
@@ -178,7 +216,8 @@ tab_group = [[
             sg.Tab("or", or_layout),
             sg.Tab("not", not_layout),
             sg.Tab("buffer", buffer_layout),
-            sg.Tab("nand", nand_layout)
+            sg.Tab("nand", nand_layout),
+            sg.Tab("nor", nor_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
@@ -198,6 +237,8 @@ while True:
                   values["-NOTBTN-"],
                   values["-BUFFER-"],
                   values["-NANDBTN1-"],
-                  values["-NANDBTN2-"])
+                  values["-NANDBTN2-"],
+                  values["-NORBTN1-"],
+                  values["-NORBTN2-"])
 
 window.close()
