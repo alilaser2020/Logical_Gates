@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 
-def logical_gates(and1, and2, or1, or2, Not, buffer):
+def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2):
     """
     A method for process of input gates and generate appropriate output of gates
     :param and1:
@@ -10,6 +10,8 @@ def logical_gates(and1, and2, or1, or2, Not, buffer):
     :param or2:
     :param Not:
     :param buffer:
+    :param nand1:
+    :param nand2:
     :return:
     """
     if bool(and1) and bool(and2):
@@ -31,6 +33,11 @@ def logical_gates(and1, and2, or1, or2, Not, buffer):
         window["-OFF4-"].update("gates/on.png")
     else:
         window["-OFF4-"].update("gates/off.png")
+
+    if not(bool(nand1) and bool(nand2)):
+        window["-OFF5-"].update("gates/on.png")
+    else:
+        window["-OFF5-"].update("gates/off.png")
 
 
 sg.theme("LightBlue7")
@@ -137,6 +144,32 @@ buffer_layout = [
     ]
 ]
 
+# Nand gate
+nand_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-NANDBTN1-", size=(4, 30), pad=(0, 5))],
+    [sg.Slider(range=(0, 1), key="-NANDBTN2-", size=(4, 30), pad=(0, 5))]
+])
+
+nand_layout = [
+    [
+        sg.Column([
+            [
+                nand_btn,
+                sg.Image("gates/nand.png", expand_x=True, expand_y=True, pad=(0, 50)),
+                sg.Image("gates/off.png", key="-OFF5-", expand_x=True, expand_y=True, pad=(0, 50))
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/nand_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="center", pad=(100, 0))
+    ]
+]
+
+# Configuration
 tab_group = [[
     sg.TabGroup([
         [
@@ -144,7 +177,8 @@ tab_group = [[
             sg.Tab("and", and_layout),
             sg.Tab("or", or_layout),
             sg.Tab("not", not_layout),
-            sg.Tab("buffer", buffer_layout)
+            sg.Tab("buffer", buffer_layout),
+            sg.Tab("nand", nand_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
@@ -162,6 +196,8 @@ while True:
                   values["-ORBTN1-"],
                   values["-ORBTN2-"],
                   values["-NOTBTN-"],
-                  values["-BUFFER-"])
+                  values["-BUFFER-"],
+                  values["-NANDBTN1-"],
+                  values["-NANDBTN2-"])
 
 window.close()
