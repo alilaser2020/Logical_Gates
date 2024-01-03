@@ -1,5 +1,19 @@
 import PySimpleGUI as sg
 
+
+def logical_gates(and1, and2):
+    """
+    A method for process of input gates and generate appropriate output of gates
+    :param and1:
+    :param and2:
+    :return:
+    """
+    if bool(and1) and bool(and2):
+        window["-OFF-"].update("gates/on.png")
+    else:
+        window["-OFF-"].update("gates/off.png")
+
+
 sg.theme("LightGray6")
 
 first_layout = [
@@ -34,11 +48,23 @@ and_layout = [
     ]
 ]
 
-window = sg.Window("GTA", and_layout)
+tab_group = [[
+    sg.TabGroup([
+        [
+            sg.Tab("start", first_layout),
+            sg.Tab("and", and_layout)
+        ]
+    ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
+        selected_background_color="yellow", selected_title_color="red")
+]]
+
+window = sg.Window("GTA", tab_group)
 
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=50)
     if event == sg.WIN_CLOSED:
         break
+
+    logical_gates(values["-ANDBTN1-"], values["-ANDBTN2-"])
 
 window.close()
