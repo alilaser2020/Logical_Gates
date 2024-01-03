@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 
-def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2, xor1, xor2):
+def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2, xor1, xor2, xnor1, xnor2):
     """
     A method for process of input gates and generate appropriate output of gates
     :param and1:
@@ -16,6 +16,8 @@ def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2, x
     :param nor2:
     :param xor1:
     :param xor2:
+    :param xnor1:
+    :param xnor2:
     :return:
     """
     # And
@@ -59,6 +61,12 @@ def logical_gates(and1, and2, or1, or2, Not, buffer, nand1, nand2, nor1, nor2, x
         window["-OFF7-"].update("gates/on.png")
     else:
         window["-OFF7-"].update("gates/off.png")
+
+    # Xnor
+    if not (bool(xnor1) ^ bool(xnor2)):
+        window["-OFF8-"].update("gates/on.png")
+    else:
+        window["-OFF8-"].update("gates/off.png")
 
 
 sg.theme("LightBlue7")
@@ -238,6 +246,33 @@ xor_layout = [
         ], justification="center", pad=(100, 0))
     ]
 ]
+
+# Xnor gate
+
+xnor_btn = sg.Column([
+    [sg.Slider(range=(0, 1), key="-XNORBTN1-", size=(4, 30), pad=(0, 5))],
+    [sg.Slider(range=(0, 1), key="-XNORBTN2-", size=(4, 30), pad=(0, 5))]
+])
+
+xnor_layout = [
+    [
+        sg.Column([
+            [
+                xnor_btn,
+                sg.Image("gates/xnor.png", expand_x=True, expand_y=True, pad=(0, 50)),
+                sg.Image("gates/off.png", key="-OFF8-", expand_x=True, expand_y=True, pad=(0, 50))
+            ]
+        ], justification="center")
+    ],
+    [
+        sg.Column([
+            [
+                sg.Image("gates/xnor_table.png", expand_x=True, expand_y=True)
+            ]
+        ], justification="center", pad=(100, 0))
+    ]
+]
+
 # Configuration
 tab_group = [[
     sg.TabGroup([
@@ -249,7 +284,8 @@ tab_group = [[
             sg.Tab("buffer", buffer_layout),
             sg.Tab("nand", nand_layout),
             sg.Tab("nor", nor_layout),
-            sg.Tab("xor", xor_layout)
+            sg.Tab("xor", xor_layout),
+            sg.Tab("xnor", xnor_layout)
         ]
     ], font="Calibre 15", tab_location="top", tab_background_color="black", title_color="white",
         selected_background_color="yellow", selected_title_color="red")
@@ -273,6 +309,8 @@ while True:
                   values["-NORBTN1-"],
                   values["-NORBTN2-"],
                   values["-XORBTN1-"],
-                  values["-XORBTN2-"])
+                  values["-XORBTN2-"],
+                  values["-XNORBTN1-"],
+                  values["-XNORBTN2-"])
 
 window.close()
